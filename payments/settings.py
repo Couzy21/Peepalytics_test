@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False).lower() in ["true", "1"]
-# DEBUG = True
+
 ALLOWED_HOSTS = []
 
 config_path = Path(__file__).resolve().parent.parent / ".env"
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -169,3 +170,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# credentials
+SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN", None)
+SQUARE_APP_ID = os.environ.get("SQUARE_APP_ID", None)

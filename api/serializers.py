@@ -5,6 +5,10 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.validators import UniqueValidator
 from .models import CustomUser
 
+"""
+Serializer for authenticating user login through JWT token provider
+"""
+
 
 class GenerateTokenSerializer(TokenObtainPairSerializer):
     email = serializers.EmailField(default=None, required=False)
@@ -53,13 +57,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = (
-            "id",
-            "name",
-            "email",
-        )
+        fields = ("id", "name", "email", "password")
 
     def create(self, validated_data):
         # Hash the password before saving
         validated_data["password"] = make_password(validated_data["password"])
+
         return super().create(validated_data)

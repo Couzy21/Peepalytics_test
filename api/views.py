@@ -35,9 +35,8 @@ class UserRegistrationView(APIView):
                 {
                     "refresh": str(refresh),
                     "access": str(refresh.access_token),
-                    "user_id": user.id,
                     "email": user.email,
-                    "message": "User registered. Please check your email to verify your account.",
+                    "message": "User registered",
                 },
                 status=status.HTTP_201_CREATED,
             )
@@ -67,3 +66,10 @@ class SquarePaymentView(APIView):
 
     def post(self, request):
         return Response({"message": "Payment successful"}, status=status.HTTP_200_OK)
+
+
+class SquarePaymentDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        return Response({"message": "Payment ID"}, status=status.HTTP_200_OK)
