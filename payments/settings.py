@@ -174,3 +174,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # credentials
 SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN", None)
 SQUARE_APP_ID = os.environ.get("SQUARE_APP_ID", None)
+ENV = os.environ.get("ENV", None)
+DEFAULT_CURRENCY = os.environ.get("DEFAULT_CURRENCY", None)

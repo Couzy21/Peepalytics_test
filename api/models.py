@@ -28,7 +28,6 @@ class CustomUser(AbstractUser):
 
 
 class Payment(models.Model):
-    # Additional fields can be added here
     amount = models.DecimalField(max_digits=20, decimal_places=2)
     currency = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
@@ -36,3 +35,6 @@ class Payment(models.Model):
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, db_index=True, default=1
     )
+
+    def __str__(self):
+        return f"{self.user} created payment of {self.amount}"
