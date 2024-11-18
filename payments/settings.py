@@ -21,16 +21,17 @@ from sentry_sdk.integrations.django import DjangoIntegration
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DEBUG", False).lower() in ["true", "1"]
+SECRET_KEY = os.environ.get("SECRET_KEY")
+print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", False).lower() in ["true", "1"]
-
+# DEBUG = os.environ.get("DEBUG", False).lower() in ["true", "1"]
+DEBUG = True
 ALLOWED_HOSTS = []
 
 config_path = Path(__file__).resolve().parent.parent / ".env"
@@ -119,6 +120,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "api.CustomUser"
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
