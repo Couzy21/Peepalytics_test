@@ -1,0 +1,11 @@
+.env
+peep
+Pipfile
+Pipfile.lock
+.env
+migrations
+_pycache_
+**/__pycache__/
+media
+db.sqlite3
+credentials
