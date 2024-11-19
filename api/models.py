@@ -35,6 +35,7 @@ class Payment(models.Model):
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, db_index=True, default=1
     )
+    payment_id = models.CharField(max_length=20, default="")
 
     def __str__(self):
         return f"{self.user} created payment of {self.amount}"

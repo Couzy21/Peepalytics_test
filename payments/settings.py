@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False).lower() in ["true", "1"]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 config_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(config_path)
@@ -151,7 +151,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        # other authentication classes...
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_PARSER_CLASSES": [
@@ -171,6 +170,18 @@ SIMPLE_JWT = {
 }
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+]
+
+
+# SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", False)
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:3000",
+]
 # credentials
 SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN", None)
 SQUARE_APP_ID = os.environ.get("SQUARE_APP_ID", None)

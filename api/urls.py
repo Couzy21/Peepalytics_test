@@ -5,7 +5,6 @@ from .views import (
     LoginView,
     UserRegistrationView,
     SquarePaymentView,
-    SquarePaymentDetailView,
 )
 
 urlpatterns = [
@@ -13,5 +12,4 @@ urlpatterns = [
     path("signup/", UserRegistrationView.as_view(), name="Signup"),
     path("login/", LoginView.as_view(), name="login"),
     path("payment/", SquarePaymentView.as_view(), name="payment"),
-    path("payment/<int>/", SquarePaymentDetailView.as_view(), name="payment-details"),
 ]
