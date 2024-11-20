@@ -136,10 +136,12 @@ class SquarePaymentView(APIView):
 
                     if result.is_success():
                         payment.status = "SUCCESS"
-                        payment.payment_id = "result.body.payment"
+                        result = result.body
+                        payment_data = result.get("payment", None)
+                        payment.payment_id = payment_data["id"]
                         payment.save()
                         return Response(
-                            {"message": "Payment Successful", "payment": result.body},
+                            {"message": "Payment Successful", "payment": result},
                             status=status.HTTP_200_OK,
                         )
                     elif result.is_error():
@@ -147,7 +149,7 @@ class SquarePaymentView(APIView):
                         payment.save()
                         return Response(
                             {
-                                "message": "an error occured while processing checkout",
+                                "message": "an error occured while processing payment request",
                                 "error": result.errors,
                             },
                             status=status.HTTP_400_BAD_REQUEST,
