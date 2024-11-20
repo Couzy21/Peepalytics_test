@@ -16,6 +16,13 @@ from django.conf import settings
 from .models import Payment
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from .swagger_schemas import (
+    liveness_check_schema,
+    user_registration_schema,
+    square_payment_get_schema,
+    square_payment_post_schema,
+    square_webhook_schema,
+)
 
 # Create your views here.
 
@@ -28,6 +35,7 @@ Endpoint for liveness check
 class PaymentsLiveAPiCheck(APIView):
     permission_classes = []
 
+    @liveness_check_schema
     def get(request, *args, **kwargs):
         return Response({"message": "Endpoint is live!!!"}, status=status.HTTP_200_OK)
 
@@ -35,6 +43,7 @@ class PaymentsLiveAPiCheck(APIView):
 class UserRegistrationView(APIView):
     permission_classes = []
 
+    @user_registration_schema
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
@@ -88,6 +97,7 @@ class SquarePaymentView(APIView):
     permission_classes = [IsAuthenticated]
     client = Client(access_token=settings.SQUARE_ACCESS_TOKEN, environment=settings.ENV)
 
+    @square_payment_get_schema
     def get(self, request, *args, **kwargs):
         try:
             payment_id = request.GET.get("payment_id", None)
@@ -110,6 +120,7 @@ class SquarePaymentView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+    @square_payment_post_schema
     def post(self, request):
         serialized_data = PaymentSerializer(data=request.data)
         if serialized_data.is_valid():
@@ -172,6 +183,7 @@ class SquarePaymentView(APIView):
 # webhook to update database with payment status after successful payment
 @method_decorator(csrf_exempt, name="dispatch")
 class SquareWebhookView(APIView):
+    @square_webhook_schema
     def post(self, request):
         event_data = request.data
         if "type" in event_data and event_data["type"] == "payment.updated":
