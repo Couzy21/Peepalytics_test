@@ -29,12 +29,12 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 
 - Windows:
 
--   python -m venv venv
--   venv\Scripts\activate
+-   - python -m venv venv
+-   - venv\Scripts\activate
 - Unix or MacOS:
 
--   python -m venv venv
--   source venv/bin/activate
+-   - python -m venv venv
+-   - source venv/bin/activate
 
 3. Install dependencies
 
