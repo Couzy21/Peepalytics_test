@@ -27,12 +27,11 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 
 2. Create and activate virtual environment
 
-#### Windows:
+- Windows:
 
 -   python -m venv venv
 -   venv\Scripts\activate
-
-#### Unix or MacOS:
+- Unix or MacOS:
 
 -   python -m venv venv
 -   source venv/bin/activate
