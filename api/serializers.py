@@ -71,12 +71,6 @@ class PaymentSerializer(serializers.Serializer):
     amount = serializers.IntegerField(min_value=1, required=True)
     idempotency_key = serializers.CharField(max_length=255, required=True)
 
-    """def validate_nonce(self, value):
-        # Add custom validation logic for nonce if necessary
-        if not value.startswith("ccof:"):  # Example: checking the prefix for a nonce
-            raise serializers.ValidationError("Invalid nonce format.")
-        return value"""
-
     def validate_idempotency_key(self, value):
         # Ensure the idempotency key is unique or has a specific format
         if len(value) < 10:  # Example: minimum length check

@@ -1,4 +1,3 @@
-from django.test import TestCase
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse
@@ -8,6 +7,9 @@ from django.contrib.auth import get_user_model
 from .models import Payment
 import uuid
 from rest_framework.test import APITestCase
+import random
+import string
+from django.db import connections
 
 
 # Create your tests here.
@@ -32,6 +34,20 @@ class CustomUserModelTest(APITestCase):
 
 
 class SquarePaymentEndpointTest(APITestCase):
+
+    @classmethod
+    def tearDownClass(cls):
+        # Close DB connections after tests
+        for conn in connections.all():
+            conn.close()
+        super().tearDownClass()
+
+    def generate_idempotency_key(self):
+        """Generate idempotency key with fixed prefix and random last 5 digits"""
+        prefix = "7b0f3ec5-086"  # Fixed 11-character prefix
+        random_suffix = "".join(random.choices(string.digits, k=3))  # 3 random digits
+        return f"{prefix}{random_suffix}"
+
     def setUp(self):
         # Create a test user
         User = get_user_model()
@@ -51,8 +67,25 @@ class SquarePaymentEndpointTest(APITestCase):
         self.payment_data = {
             "nonce": "cnon:card-nonce-ok",  # Square's test nonce for successful payments
             "amount": 5000,  # $50.00
-            "idempotency_key": str(uuid.uuid4()),
+            "idempotency_key": self.generate_idempotency_key(),
         }
+
+    def test_registration_and_login(self):
+        # Test registration
+        register_data = {
+            "email": "new@example.com",
+            "password": "pass123",
+            "name": "New User",
+        }
+        response = self.client.post(reverse("signup"), register_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("access", response.data)
+
+        # Test login
+        login_data = {"email": "new@example.com", "password": "pass123"}
+        response = self.client.post(reverse("login"), login_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("access", response.data)
 
     def test_successful_payment(self):
         """Test a successful payment with valid data"""
@@ -113,6 +146,7 @@ class SquarePaymentEndpointTest(APITestCase):
         response = self.client.post(
             reverse("payment"), self.payment_data, format="json"
         )
+        print(response.data)
         payment_id = response.data["payment"]["payment"]["id"]
 
         # Then retrieve it

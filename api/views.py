@@ -41,6 +41,7 @@ class PaymentsLiveAPiCheck(APIView):
 
 
 class UserRegistrationView(APIView):
+    throttle_scope = "burst"
     permission_classes = []
 
     @user_registration_schema
@@ -65,6 +66,7 @@ class UserRegistrationView(APIView):
 
 class LoginView(TokenObtainPairView):
     serializer_class = GenerateTokenSerializer
+    throttle_scope = "burst"
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -94,6 +96,7 @@ params: payment_id: Passed in the GET request to fetch a particular transaction
 
 
 class SquarePaymentView(APIView):
+    throttle_scope = "burst"
     permission_classes = [IsAuthenticated]
     client = Client(access_token=settings.SQUARE_ACCESS_TOKEN, environment=settings.ENV)
 
