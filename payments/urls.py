@@ -46,6 +46,7 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+    path("", RedirectView.as_view(url="swagger/"), name="redirection"),
 ]
 if settings.DEBUG:
     import debug_toolbar
