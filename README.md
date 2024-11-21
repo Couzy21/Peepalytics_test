@@ -21,31 +21,34 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 
 1. Clone the repository
    bash
-   git clone <repository-url>
-   cd peepalytics-test
+
+-   git clone <repository-url>
+-   cd peepalytics-test
 
 2. Create and activate virtual environment
 
-Windows:
-python -m venv venv
-venv\Scripts\activate
+## Windows:
 
-Unix or MacOS:
-python -m venv venv
-source venv/bin/activate
+-   python -m venv venv
+-   venv\Scripts\activate
+
+## Unix or MacOS:
+
+-   python -m venv venv
+-   source venv/bin/activate
 
 3. Install dependencies
 
-pip install -r requirements.txt
+-   pip install -r requirements.txt
 
 4. Set up environment variables
    Create a `.env` file in the root directory with the following variables:
 
-DEBUG=False
-SECRET_KEY=your_secret_key
-DATABASE_URL=postgres://user:password@localhost:5432/db_name
-SQUARE_ACCESS_TOKEN=your_square_access_token
-SQUARE_ENVIRONMENT=sandbox # or production
+-   DEBUG=False
+-   SECRET_KEY=your_secret_key
+-   DATABASE_URL=postgres://user:password@localhost:5432/db_name
+-   SQUARE_ACCESS_TOKEN=your_square_access_token
+-   SQUARE_ENVIRONMENT=sandbox # or production
 
 5. Run database migrations
    python manage.py makemigrations
@@ -88,8 +91,6 @@ The API is currently deployed on Render:
 
 -   Users can only view their own payment history
 -   Failed payments are automatically retried 3 times
--   Webhook notifications are processed asynchronously
--   Payment refunds must be processed within 30 days
 -   All prices are in USD
 
 ### Frontend Integration
