@@ -51,19 +51,22 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 -   SQUARE_ENVIRONMENT=sandbox # or production
 
 5. Run database migrations
-   python manage.py makemigrations
 
-python manage.py migrate
+-   python manage.py makemigrations
+
+-   python manage.py migrate
 
 6. Start the development server
-   python manage.py runserver
+
+-   python manage.py runserver
 
 The API will be available at `http://localhost:8000`
 
 ## 🧪 Testing
 
 Run the test suite using:
-python manage.py test
+
+-   python manage.py test
 
 ## 📚 API Documentation
 
