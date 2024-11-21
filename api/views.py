@@ -1,14 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import PaymentFilter
 from .serializers import (
     CustomUserSerializer,
     GenerateTokenSerializer,
     PaymentSerializer,
+    UserPaymentSerializer,
 )
 from square.client import Client
 from square.api.payments_api import PaymentsApi
@@ -211,4 +214,21 @@ class SquareWebhookView(APIView):
 
         return Response(
             {"message": "Event not processed"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class PaymentListCreateAPIView(generics.ListAPIView):
+    serializer_class = UserPaymentSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PaymentFilter
+
+    def get_queryset(self):
+        """
+        Return payments for the currently authenticated user only
+        """
+        return (
+            Payment.objects.filter(user=self.request.user)
+            .prefetch_related("user")
+            .order_by("-created_at")
         )

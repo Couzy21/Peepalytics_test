@@ -3,7 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from rest_framework.validators import UniqueValidator
-from .models import CustomUser
+from .models import CustomUser, Payment
 
 """
 Serializer for authenticating user login through JWT token provider
@@ -73,6 +73,12 @@ class PaymentSerializer(serializers.Serializer):
 
     def validate_idempotency_key(self, value):
         # Ensure the idempotency key is unique or has a specific format
-        if len(value) < 10:  # Example: minimum length check
+        if len(value) < 10:
             raise serializers.ValidationError("Idempotency key is too short.")
         return value
+
+
+class UserPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = "__all__"

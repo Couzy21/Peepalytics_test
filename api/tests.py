@@ -146,7 +146,6 @@ class SquarePaymentEndpointTest(APITestCase):
         response = self.client.post(
             reverse("payment"), self.payment_data, format="json"
         )
-        print(response.data)
         payment_id = response.data["payment"]["payment"]["id"]
 
         # Then retrieve it
@@ -172,3 +171,23 @@ class SquarePaymentEndpointTest(APITestCase):
             reverse("payment"), self.payment_data, format="json"
         )
         self.assertEqual(response2.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_payment_list_view(self):
+        """Test that users can only see their own payments"""
+        # Create another user
+        other_user = CustomUser.objects.create(
+            name="other_user",
+            email="other@example.com",
+            password=make_password("testpass123"),
+        )
+
+        # Create payments for both users
+        Payment.objects.create(user=self.user, amount=1000, status="SUCCESS")
+        Payment.objects.create(user=other_user, amount=2000, status="SUCCESS")
+
+        # Get payments (authenticated as self.user)
+        response = self.client.get(reverse("payments-list"))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["amount"], "1000.00")
