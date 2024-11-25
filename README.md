@@ -76,7 +76,7 @@ Run the test suite using:
 
 -   **Authentication**
 
-    -   POST `/api/register/` - User registration
+    -   POST `/api/signup/` - User registration
     -   POST `/api/login/` - User login
 
 -   **Payments**
