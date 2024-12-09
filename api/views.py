@@ -88,7 +88,6 @@ class LoginView(TokenObtainPairView):
 
 """
 Square payment API
-#POST
 Used to create a new payment on square
 params:source_id: Generated token from the frontend
 params: amount to be payed generated from the frontend
