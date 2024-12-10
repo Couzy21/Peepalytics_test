@@ -1,9 +1,11 @@
 services:
+    #staging backend
     - type: web
-      name: Peepalytics_test
+      name: staging_backend
       runtime: python
       repo: https://github.com/Couzy21/Peepalytics_test
       plan: free
+      branch: staging
       envVars:
           - key: DEFAULT_CURRENCY
             sync: false
@@ -22,4 +24,42 @@ services:
       region: oregon
       buildCommand: pip install -r requirements.txt
       startCommand: gunicorn payments.wsgi --bind 0.0.0.0:$PORT
-version: "1"
+
+    #production backend
+    - type: web
+      name: production-backend
+      runtime: python
+      repo: https://github.com/Couzy21/Peepalytics_test
+      plan: free
+      branch: main
+      autoDeploy: false
+      envVars:
+          - key: DEFAULT_CURRENCY
+            sync: false
+          - key: ENV
+            sync: false
+          - key: SQUARE_APP_ID
+            sync: false
+          - key: SQUARE_ACCESS_TOKEN
+            sync: false
+          - key: DEBUG
+            sync: false
+          - key: DATABASE_URL
+            sync: false
+          - key: SECRET_KEY
+            sync: false
+      region: oregon
+      buildCommand: pip install -r requirements.txt
+      startCommand: gunicorn payments.wsgi --bind 0.0.0.0:$PORT
+#databases:""""
+# Staging Database
+#  - name: staging-database
+#    plan: starter
+#    properties:
+#      disk_size: 10GB
+
+# Production Database
+#  - key: DATABASE_URL
+#    fromDatabase:
+#      properties:
+#        disk_size: 20GB
