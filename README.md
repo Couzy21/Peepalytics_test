@@ -27,15 +27,14 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 
 2. Create and activate virtual environment
 
-#### Windows:
+- Windows:
 
--   python -m venv venv
--   venv\Scripts\activate
+-   - python -m venv venv
+-   - venv\Scripts\activate
+- Unix or MacOS:
 
-#### Unix or MacOS:
-
--   python -m venv venv
--   source venv/bin/activate
+-   - python -m venv venv
+-   - source venv/bin/activate
 
 3. Install dependencies
 
@@ -48,7 +47,8 @@ Backend infrastructure for the Peepalytics test application, built with Django R
 -   SECRET_KEY=your_secret_key
 -   DATABASE_URL=postgres://user:password@localhost:5432/db_name
 -   SQUARE_ACCESS_TOKEN=your_square_access_token
--   SQUARE_ENVIRONMENT=sandbox # or production
+-   ENV=sandbox # or production
+-   SQUARE_APP_ID = your_square_app_id
 
 5. Run database migrations
 
@@ -77,7 +77,7 @@ Run the test suite using:
 
 -   **Authentication**
 
-    -   POST `/api/register/` - User registration
+    -   POST `/api/signup/` - User registration
     -   POST `/api/login/` - User login
 
 -   **Payments**
